@@ -58,7 +58,9 @@ Al ser una aplicació web que consistirà en el desenvolupament de tornejos de f
     - **data**: Aquest camp conté la data del partit. Aquest camp és de tipus data.
     - **hora**: Aquest camp conté l'hora del partit. Aquest camp és de tipus hora.
     - **id_equip_local**: Aquest camp conté l'identificador de l'equip local. Aquest camp és de tipus enter i és una clau forana.
+    - **gols_equip_local**: Aquest camp conté el nombre de gols que ha marcat l'equip local. Aquest camp és de tipus enter.
     - **id_equip_visitant**: Aquest camp conté l'identificador de l'equip visitant. Aquest camp és de tipus enter i és una clau forana.
+    - **gols_equip_visitant**: Aquest camp conté el nombre de gols que ha marcat l'equip visitant. Aquest camp és de tipus enter.
     - **id_camp**: Aquest camp conté l'identificador del camp on es disputa el partit. Aquest camp és de tipus enter i és una clau forana.
     - **id_torneig**: Aquest camp conté l'identificador del torneig al qual pertany el partit. Aquest camp és de tipus enter i és una clau forana.
 
