@@ -11,7 +11,10 @@ Encara no està decidit.
 Al ser una aplicació web que consistirà en el desenvolupament de tornejos de futbol, he decidit crear una base de dades que contingui tota la informació necessària per a poder desenvolupar aquesta aplicació web. Aquesta base de dades estarà formada per les següents taules:
 
 ## Taules
- ***Arbitre***: Contindrà informació dels àrbitres que participaran als tornejos. Aquesta informació serà el nom, cognoms i dades de registre per tancar les actes.***Equip***: Contindrà informació dels equips que participaran als tornejos. Aquesta informació serà el nom, escut, gols a favor i en contra, punts i resultats.
+ ***Arbitre***: Contindrà informació dels àrbitres que participaran als tornejos. Aquesta informació serà el nom, cognoms i dades de registre per tancar les actes.
+ 
+ ***Equip***: Contindrà informació dels equips que participaran als tornejos. Aquesta informació serà el nom, escut, gols a favor i en contra, punts i resultats.
+ 
  ***Jugador***: Contindrà informació dels jugadors que participaran als tornejos. Aquesta informació serà el nom, cognoms, dorsal, gols i data de naixement.
 
  ***Partit***: Contindrà informació dels partits que es disputaran als tornejos. Aquesta informació serà la data, l'hora, l'àrbitre, l'equip local, l'equip visitant, el resultat i el camp on es disputarà el partit.
