@@ -34,6 +34,7 @@ Al ser una aplicació web que consistirà en el desenvolupament de tornejos de f
 ## Diagrama de la base de dades:
 
 Aquest és el diagrama de la base de dades que he creat per aquesta aplicació web. Aquest diagrama està creat amb el programa [SqlIDBM](https://app.sqldbm.com/) i es pot trobar a la carpeta **sql**.
+
 ![Imgur](https://i.ibb.co/PtKFynT/diagrama-ER-bbdd.png)
 
 Per aixecar la base de dades, he utilitzat la llibreria [SQL alchemy](https://www.sqlalchemy.org/). Aquesta llibreria permet crear la base de dades a partir dels models de les taules. Aquests models es troben a la carpeta **models**.
