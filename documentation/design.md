@@ -32,7 +32,7 @@ Al ser una aplicació web que consistirà en el desenvolupament de tornejos de f
  
  ***Administrador***: Contindrà informació dels administradors de l'aplicació web. Aquesta informació serà el nom, cognoms, usuari i contrasenya.
 
- ***Gol*** (taula intermitja): Contindrà informació dels gols que es marcaran als partits. Aquesta informació serà el jugador que ha marcat el gol, el partit on s'ha marcat el gol i l'equip que ha marcat el gol.
+ ***Gol***: Contindrà informació dels gols que es marcaran als partits. Aquesta informació serà el jugador que ha marcat el gol, el partit on s'ha marcat el gol i l'equip que ha marcat el gol.
 
 ***Sancions*** (taula intermitja): Contindrà informació de les sancions que es donaran als jugadors. Aquesta informació serà el jugador que ha rebut la sanció, el partit on s'ha rebut la sanció i el tipus de sanció.
 
