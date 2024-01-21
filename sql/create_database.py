@@ -1,10 +1,11 @@
 from sqlalchemy import Date, create_engine, Column, Integer, String, Sequence, Time, ForeignKey, DateTime, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import relationship
+import mysql.connector
 
-Database = declarative_base()
+Base = declarative_base()
 
-class Arbit(Database):
+class Arbit(Base):
     __tablename__ = 'Arbit'
     id_arbit = Column(Integer, Sequence('id_arbit_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -17,7 +18,7 @@ class Arbit(Database):
     # RELACIONS
     torneig = relationship("Torneig", back_populates="arbit")
 
-class Torneig(Database):
+class Torneig(Base):
     __tablename__ = 'Torneig'
     id_torneig = Column(Integer, Sequence('id_torneig_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -31,7 +32,7 @@ class Torneig(Database):
     # RELACIONS
     ubicacio = relationship("Ubicació", back_populates="torneig")
 
-class Partit(Database):
+class Partit(Base):
     __tablename__ = 'Partit'
     id_partit = Column(Integer, Sequence('id_partit_seq'), primary_key=True, autoincrement=True, nullable=False)
     data_partit = Column(Date, nullable=False)
@@ -54,7 +55,7 @@ class Partit(Database):
                             , backref="equip2")
     grup = relationship("Torneig", back_populates="partit")
 
-class Camp(Database):
+class Camp(Base):
     __tablename__ = 'Camp'
     id_camp = Column(Integer, Sequence('id_camp_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -67,7 +68,7 @@ class Camp(Database):
     torneig = relationship("Torneig", back_populates="camp")
     partit = relationship("Partit", back_populates="camp")
 
-class Administradors(Database):
+class Administradors(Base):
     __tablename__ = 'Administradors'
     id_administrador = Column(Integer, Sequence('id_administrador_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -82,7 +83,7 @@ class Administradors(Database):
     personal = relationship("Personal", back_populates="administradors")
     torneig = relationship("Torneig", back_populates="administradors")
 
-class Personal(Database):
+class Personal(Base):
     __tablename__ = 'Personal'
     id_personal = Column(Integer, Sequence('id_personal_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -97,14 +98,14 @@ class Personal(Database):
     arbit = relationship("Arbit", back_populates="personal")
     torneig = relationship("Torneig", back_populates="personal")
 
-class Ubicació(Database):
+class Ubicació(Base):
     __tablename__ = 'Ubicació'
     id_ubicacio = Column(Integer, Sequence('id_ubicacio_seq'), primary_key=True, autoincrement=True, nullable=False)
     ciutat = Column(String, nullable=False)
     provincia = Column(String, nullable=False)
     codi_postal = Column(Integer, nullable=False)
 
-class Jugador(Database):
+class Jugador(Base):
     __tablename__ = 'Jugador'
     id_jugador = Column(Integer, Sequence('id_jugador_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -118,7 +119,7 @@ class Jugador(Database):
     # RELACIONS
     equip = relationship("Equip", back_populates="jugador")
 
-class Equip(Database):
+class Equip(Base):
     __tablename__ = 'Equip'
     id_equip = Column(Integer, Sequence('id_equip_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -138,7 +139,7 @@ class Equip(Database):
     grup = relationship("Grup", back_populates="equip")
     partit = relationship("Partit", back_populates="equip")
 
-class Grup(Database):
+class Grup(Base):
     __tablename__ = 'Grup'
     id_grup = Column(Integer, Sequence('id_grup_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String, nullable=False)
@@ -150,7 +151,7 @@ class Grup(Database):
     # RELACIONS
     torneig = relationship("Torneig", back_populates="grup")
 
-class Gol(Database):
+class Gol(Base):
     __tablename__ = 'Gol'
     id_gol = Column(Integer, Sequence('id_gol_seq'), primary_key=True, autoincrement=True, nullable=False)
     minut = Column(Integer, nullable=False)
@@ -163,7 +164,7 @@ class Gol(Database):
     partit = relationship("Partit", back_populates="gol")
     jugador = relationship("Jugador", back_populates="gol")
 
-class Sancions(Database):
+class Sancions(Base):
     __tablename__ = "Sancions"
     id_jugador = Column(Integer, ForeignKey("Jugador.id_jugador"), primary_key=True)
     id_partit = Column(Integer, ForeignKey("Partit.id_partit"), primary_key=True)
@@ -176,7 +177,7 @@ class Sancions(Database):
     jugador = relationship("Jugador", back_populates="sanciones")
     partit = relationship("Partit", back_populates="sanciones")
 
-class Classificació(Database):
+class Classificació(Base):
     __tablename__ = 'Classificació'
     id_grup = Column(Integer, ForeignKey('Grup.id_grup'), primary_key=True)
     id_equip = Column(Integer, ForeignKey('Equip.id_equip'), primary_key=True)
@@ -224,18 +225,25 @@ Partit.sancions = relationship("Sancions", order_by=Sancions.id_partit, back_pop
 Grup.classificacio = relationship("Classificació", order_by=Classificació.id_grup, back_populates="grup")
 Equip.classificacio = relationship("Classificació", order_by=Classificació.id_equip, back_populates="equip")
 
-# CREACIÓ DE LA BASE DE DADES en mysql
+# CREACIÓ DE LA BASE DE DADES
 
-connection_url = f'mysql+mysqlconnector://root:root@localhost:3306/Database'
+usuario = 'root'
+contraseña = 'root'
+host = 'localhost'
+puerto = '3306'
+Base_name = 'Database_torneig'
 
-engine = create_engine(connection_url, echo=True)
+# Conecta al servidor MySQL
+conexion_mysql = mysql.connector.connect(user=usuario, password=contraseña, host=host, port=puerto)
 
-database = 'Database'
+# Crea la base de datos si no existe
+cursor = conexion_mysql.cursor()
+cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Base_name}")
+cursor.close()
 
-engine.execute(f'CREATE DATABASE IF NOT EXISTS {database}')
-engine.execute(f'USE {database}')
+# Cierra la conexión inicial
+conexion_mysql.close()
 
-Database.metadata.create_all(engine)
-
-Session = sessionmaker(bind=engine)
-session = Session()
+# Ahora, crea el motor de SQLAlchemy con la base de datos especificada
+url_de_conexion = f'mysql+mysqlconnector://{usuario}:{contraseña}@{host}:{puerto}/{Base_name}'
+engine = create_engine(url_de_conexion, echo=True)
