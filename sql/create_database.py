@@ -226,24 +226,24 @@ Equip.classificacio = relationship("Classificació", order_by=Classificació.id_
 
 # CREACIÓ DE LA BASE DE DADES
 
-usuario = 'root'
-contraseña = 'root'
+usuari = 'root'
+password = 'root'
 host = 'localhost'
-puerto = '3306'
+port = '3306'
 Base_name = 'Database_torneig'
 
-# Conecta al servidor MySQL
-conexion_mysql = mysql.connector.connect(user=usuario, password=contraseña, host=host, port=puerto)
+# Connexió al servidor MySQL
+conexion_mysql = mysql.connector.connect(user=usuari, password=password, host=host, port=port)
 
-# Crea la base de datos si no existe
+# Crea la base de dades en cas que no existeixi
 cursor = conexion_mysql.cursor()
 cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Base_name}")
 cursor.close()
 
-# Cierra la conexión inicial
+# Tanca la connexió al servidor MySQL
 conexion_mysql.close()
 
-# Ahora, crea el motor de SQLAlchemy con la base de datos especificada
-url_de_conexion = f'mysql+mysqlconnector://{usuario}:{contraseña}@{host}:{puerto}/{Base_name}'
+# Crear el motor de la base de dades i crear les taules
+url_de_conexion = f'mysql+mysqlconnector://{usuari}:{password}@{host}:{port}/{Base_name}'
 engine = create_engine(url_de_conexion, echo=True)
 Base.metadata.create_all(engine)
