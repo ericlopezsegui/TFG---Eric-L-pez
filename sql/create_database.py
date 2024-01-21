@@ -7,9 +7,9 @@ Base = declarative_base()
 class Arbit(Base):
     __tablename__ = 'Arbit'
     id_arbit = Column(Integer, Sequence('id_arbit_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
-    cognom = Column(String, nullable=False)
-    password = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
+    cognom = Column(String(50), nullable=False)
+    password = Column(String(250), nullable=False)
 
     # CLAUS FORANIES
     id_torneig = Column(Integer, ForeignKey('Torneig.id_torneig'))
@@ -20,10 +20,10 @@ class Arbit(Base):
 class Torneig(Base):
     __tablename__ = 'Torneig'
     id_torneig = Column(Integer, Sequence('id_torneig_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
     data_inici = Column(Date, nullable=False)
     data_final = Column(Date, nullable=False)
-    fase = Column(String, nullable=False)
+    fase = Column(String(50), nullable=False)
 
     # CLAUS FORANIES
     id_ubicacio = Column(Integer, ForeignKey('Ubicació.id_ubicacio'))
@@ -36,7 +36,7 @@ class Partit(Base):
     id_partit = Column(Integer, Sequence('id_partit_seq'), primary_key=True, autoincrement=True, nullable=False)
     data_partit = Column(Date, nullable=False)
     hora_partit = Column(Time, nullable=False)
-    resultat = Column(String,  nullable=False)
+    resultat = Column(String(50),  nullable=False)
     gols_equip1 = Column(Integer, nullable=False)
     gols_equip2 = Column(Integer, nullable=False)
     id_equip1 = Column(Integer, nullable=False)
@@ -57,7 +57,7 @@ class Partit(Base):
 class Camp(Base):
     __tablename__ = 'Camp'
     id_camp = Column(Integer, Sequence('id_camp_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
 
     # CLAUS FORANIES
     id_torneig = Column(Integer, ForeignKey('Torneig.id_torneig'))
@@ -70,9 +70,9 @@ class Camp(Base):
 class Administradors(Base):
     __tablename__ = 'Administradors'
     id_administrador = Column(Integer, Sequence('id_administrador_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
-    cognom = Column(String, nullable=False)
-    password = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
+    cognom = Column(String(50), nullable=False)
+    password = Column(String(250), nullable=False)
 
     # CLAUS FORANIES
     id_personal = Column(Integer, ForeignKey('Personal.id_personal'))
@@ -85,9 +85,9 @@ class Administradors(Base):
 class Personal(Base):
     __tablename__ = 'Personal'
     id_personal = Column(Integer, Sequence('id_personal_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
-    cognom = Column(String, nullable=False)
-    carrec = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
+    cognom = Column(String(50), nullable=False)
+    carrec = Column(String(100), nullable=False)
 
     # CLAUS FORANIES
     id_torneig = Column(Integer, ForeignKey('Torneig.id_torneig'))
@@ -100,15 +100,15 @@ class Personal(Base):
 class Ubicació(Base):
     __tablename__ = 'Ubicació'
     id_ubicacio = Column(Integer, Sequence('id_ubicacio_seq'), primary_key=True, autoincrement=True, nullable=False)
-    ciutat = Column(String, nullable=False)
-    provincia = Column(String, nullable=False)
+    ciutat = Column(String(50), nullable=False)
+    provincia = Column(String(50), nullable=False)
     codi_postal = Column(Integer, nullable=False)
 
 class Jugador(Base):
     __tablename__ = 'Jugador'
     id_jugador = Column(Integer, Sequence('id_jugador_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
-    cognom = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
+    cognom = Column(String(50), nullable=False)
     data_naixement = Column(DateTime, nullable=False)
     dorsal = Column(Integer, nullable=False)
 
@@ -121,7 +121,7 @@ class Jugador(Base):
 class Equip(Base):
     __tablename__ = 'Equip'
     id_equip = Column(Integer, Sequence('id_equip_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
     escut = Column(LargeBinary, nullable=False)
     punts = Column(Integer, nullable=False)
     victoria = Column(Integer, nullable=False)
@@ -141,7 +141,7 @@ class Equip(Base):
 class Grup(Base):
     __tablename__ = 'Grup'
     id_grup = Column(Integer, Sequence('id_grup_seq'), primary_key=True, autoincrement=True, nullable=False)
-    nom = Column(String, nullable=False)
+    nom = Column(String(50), nullable=False)
     nombre_equips = Column(Integer, nullable=False)
 
     # CLAUS FORANIES
@@ -246,3 +246,4 @@ conexion_mysql.close()
 # Ahora, crea el motor de SQLAlchemy con la base de datos especificada
 url_de_conexion = f'mysql+mysqlconnector://{usuario}:{contraseña}@{host}:{puerto}/{Base_name}'
 engine = create_engine(url_de_conexion, echo=True)
+Base.metadata.create_all(engine)
