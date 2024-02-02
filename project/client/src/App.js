@@ -1,16 +1,23 @@
-import React from 'react';
-import Torneo from './components/Torneig.js';
+import logo from './logo.svg';
 import './App.css';
-
-import connect from '../../server/db/index.js';
-import sequelize from '../../server/db/conf.js';
-
-connect();
 
 function App() {
   return (
     <div className="App">
-      <Torneo />
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
   );
 }
