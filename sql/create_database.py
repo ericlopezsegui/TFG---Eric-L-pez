@@ -9,6 +9,7 @@ class Arbit(Base):
     id_arbit = Column(Integer, Sequence('id_arbit_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String(50), nullable=False)
     cognom = Column(String(50), nullable=False)
+    email = Column(String(150), nullable=False)
     password = Column(String(250), nullable=False)
 
     # CLAUS FORANIES
@@ -72,6 +73,7 @@ class Administradors(Base):
     id_administrador = Column(Integer, Sequence('id_administrador_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String(50), nullable=False)
     cognom = Column(String(50), nullable=False)
+    email = Column(String(150), nullable=False)
     password = Column(String(250), nullable=False)
 
     # CLAUS FORANIES
@@ -123,11 +125,7 @@ class Equip(Base):
     id_equip = Column(Integer, Sequence('id_equip_seq'), primary_key=True, autoincrement=True, nullable=False)
     nom = Column(String(50), nullable=False)
     escut = Column(LargeBinary, nullable=False)
-    punts = Column(Integer, nullable=False)
-    victoria = Column(Integer, nullable=False)
-    derrota = Column(Integer, nullable=False)
-    empat = Column(Integer, nullable=False)
-
+    
     # CLAUS FORANIES
     id_torneig = Column(Integer, ForeignKey('Torneig.id_torneig'))
     id_grup = Column(Integer, ForeignKey('Grup.id_grup'))
@@ -176,8 +174,8 @@ class Sancions(Base):
     jugador = relationship("Jugador", back_populates="sanciones")
     partit = relationship("Partit", back_populates="sanciones")
 
-class Classificació(Base):
-    __tablename__ = 'Classificació'
+class Classificacio(Base):
+    __tablename__ = 'Classificacio'
     id_grup = Column(Integer, ForeignKey('Grup.id_grup'), primary_key=True)
     id_equip = Column(Integer, ForeignKey('Equip.id_equip'), primary_key=True)
 
