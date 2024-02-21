@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/flask'
+from flask_sqlalchemy import SQLAlchemy
+from project.server.app import app
+
 db = SQLAlchemy(app)
 
 from project.server.models.torneig import Torneig
@@ -21,4 +24,3 @@ from project.server.models.camp import Camp
 
 if __name__ == '__main__':
     app.run(debug=True)
-
