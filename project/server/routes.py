@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app import app  # Importa tu instancia de Flask
+from app import app  
 from project.server.models.torneig import Torneig
 from project.server.models.personal import Personal
 from project.server.models.jugador import Jugador
@@ -13,7 +13,7 @@ from project.server.models.gol import Gol
 from project.server.models.grup import Grup
 from project.server.models.sancions import Sancions
 from project.server.models.camp import Camp
-from app import db  # Importa tu instancia de SQLAlchemy
+from app import db  
 
 # RUTES ADMINISTRADORS
 @app.route('/administradores', methods=['GET'])
