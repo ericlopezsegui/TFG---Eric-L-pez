@@ -219,8 +219,8 @@ Jugador.gol = relationship("Gol", order_by=Gol.id_gol, back_populates="jugador")
 Jugador.sancions = relationship("Sancions", order_by=Sancions.id_jugador, back_populates="jugador")
 Partit.sancions = relationship("Sancions", order_by=Sancions.id_partit, back_populates="partit")
 
-Grup.classificacio = relationship("Classificació", order_by=Classificacio.id_grup, back_populates="grup")
-Equip.classificacio = relationship("Classificació", order_by=Classificacio.id_equip, back_populates="equip")
+Grup.classificacio = relationship("Classificacio", order_by=Classificacio.id_grup, back_populates="grup")
+Equip.classificacio = relationship("Classificacio", order_by=Classificacio.id_equip, back_populates="equip")
 
 # CREACIÓ DE LA BASE DE DADES
 
