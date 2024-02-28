@@ -6,21 +6,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/flask'
 
 db = SQLAlchemy(app)
 
-from project.server.routes import app as routes_app
+from routes import app as routes_app
 
-from project.server.models.torneig import Torneig
-from project.server.models.personal import Personal
-from project.server.models.jugador import Jugador
-from project.server.models.equip import Equip
-from project.server.models.ubicacio import Ubicacio
-from project.server.models.arbit import Arbit
-from project.server.models.partit import Partit
-from project.server.models.administradors import Administradors
-from project.server.models.classificació import Classificacio
-from project.server.models.gol import Gol
-from project.server.models.grup import Grup
-from project.server.models.sancions import Sancions
-from project.server.models.camp import Camp
+from models.torneig import Torneig
+from models.personal import Personal
+from models.jugador import Jugador
+from models.equip import Equip
+from models.ubicacio import Ubicacio
+from models.arbit import Arbit
+from models.partit import Partit
+from models.administradors import Administradors
+from models.classificació import Classificacio
+from models.gol import Gol
+from models.grup import Grup
+from models.sancions import Sancions
+from models.camp import Camp
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,18 +1,22 @@
 from flask import jsonify, request
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'server')))
+
 from app import app  
-from project.server.models.torneig import Torneig
-from project.server.models.personal import Personal
-from project.server.models.jugador import Jugador
-from project.server.models.equip import Equip
-from project.server.models.ubicacio import Ubicacio
-from project.server.models.arbit import Arbit
-from project.server.models.partit import Partit
-from project.server.models.administradors import Administradors
-from project.server.models.classificació import Classificacio
-from project.server.models.gol import Gol
-from project.server.models.grup import Grup
-from project.server.models.sancions import Sancions
-from project.server.models.camp import Camp
+from models.torneig import Torneig
+from models.personal import Personal
+from models.jugador import Jugador
+from models.equip import Equip
+from models.ubicacio import Ubicacio
+from models.arbit import Arbit
+from models.partit import Partit
+from models.administradors import Administradors
+from models.classificació import Classificacio
+from models.gol import Gol
+from models.grup import Grup
+from models.sancions import Sancions
+from models.camp import Camp
 from app import db  
 
 # RUTES ADMINISTRADORS
@@ -26,7 +30,7 @@ def get_administrador(id_administrador):
     administrador = Administradors.query.get_or_404(id_administrador)
     return jsonify(administrador.serialize())
 
-@app.route('/administradores', methods=['POST'])
+@app.route('/administradores/postAdmin', methods=['POST'])
 def create_administrador():
     datos = request.json
     nuevo_administrador = Administradors(nom=datos['nom'], cognom=datos['cognom'], email=datos['email'], password=datos['password'])
@@ -34,7 +38,7 @@ def create_administrador():
     db.session.commit()
     return jsonify(nuevo_administrador.serialize()), 201
 
-@app.route('/administradores/<int:id_administrador>', methods=['PUT'])
+@app.route('/administradores/<int:id_administrador>/updateAdmin', methods=['PUT'])
 def update_administrador(id_administrador):
     administrador = Administradors.query.get_or_404(id_administrador)
     datos = request.json
@@ -47,7 +51,7 @@ def update_administrador(id_administrador):
     db.session.commit()
     return jsonify(administrador.serialize())
 
-@app.route('/administradores/<int:id_administrador>', methods=['DELETE'])
+@app.route('/administradores/deleteAdmin', methods=['DELETE'])
 def delete_administrador(id_administrador):
     administrador = Administradors.query.get_or_404(id_administrador)
     db.session.delete(administrador)
@@ -172,7 +176,7 @@ def get_equips():
     equips = Equip.query.all()
     return jsonify([equip.serialize() for equip in equips])
 
-@app.route('/equips/<int:id_equip>', methods=['GET'])
+@app.route('/equips/<int:id_equip>', methods=['GET_BY_ID'])
 def get_equip(id_equip):
     equip = Equip.query.get_or_404(id_equip)
     return jsonify(equip.serialize())
@@ -211,7 +215,7 @@ def get_gols():
     gols = Gol.query.all()
     return jsonify([gol.serialize() for gol in gols])
 
-@app.route('/gols/<int:id_gol>', methods=['GET'])
+@app.route('/gols/<int:id_gol>', methods=['GET_BY_ID'])
 def get_gol(id_gol, id_partit):
     gol = Gol.query.get_or_404(id_gol, id_partit)
     return jsonify(gol.serialize())
@@ -247,7 +251,7 @@ def get_grups():
     grups = Grup.query.all()
     return jsonify([grup.serialize() for grup in grups])
 
-@app.route('/grups/<int:id_grup>', methods=['GET'])
+@app.route('/grups/<int:id_grup>', methods=['GET_BY_ID'])
 def get_grup(id_grup):
     grup = Grup.query.get_or_404(id_grup)
     return jsonify(grup.serialize())
@@ -283,7 +287,7 @@ def get_jugadors(id_equip):
     jugadors = Jugador.query.get_or_404(id_equip)
     return jsonify([jugador.serialize() for jugador in jugadors])
 
-@app.route('/jugadors/<int:id_jugador>', methods=['GET'])
+@app.route('/jugadors/<int:id_jugador>', methods=['GET_BY_ID'])
 def get_jugador(id_jugador):
     jugador = Jugador.query.get_or_404(id_jugador)
     return jsonify(jugador.serialize())
@@ -321,7 +325,7 @@ def get_partits(id_grup):
     partits = Partit.query.get_or_404(id_grup)
     return jsonify([partit.serialize() for partit in partits])
 
-@app.route('/partits/<int:id_partit>', methods=['GET'])
+@app.route('/partits/<int:id_partit>', methods=['GET_BY_ID'])
 def get_partit(id_partit):
     partit = Partit.query.get_or_404(id_partit)
     return jsonify(partit.serialize())
@@ -363,7 +367,7 @@ def get_personals(id_torneig):
     personals = Personal.query.get_or_404(id_torneig)
     return jsonify([personal.serialize() for personal in personals])
 
-@app.route('/personals/<int:id_personal>', methods=['GET'])
+@app.route('/personals/<int:id_personal>', methods=['GET_BY_ID'])
 def get_personal(id_personal):
     personal = Personal.query.get_or_404(id_personal)
     return jsonify(personal.serialize())
@@ -402,7 +406,7 @@ def get_sancions(id_partit):
     sancions = Sancions.query.get_or_404(id_partit)
     return jsonify([sancion.serialize() for sancion in sancions])
 
-@app.route('/sancions/<int:id_sancion>', methods=['GET'])
+@app.route('/sancions/<int:id_sancion>', methods=['GET_BY_ID'])
 def get_sancion(id_sancion):
     sancion = Sancions.query.get_or_404(id_sancion)
     return jsonify(sancion.serialize())
@@ -439,7 +443,7 @@ def get_torneigs():
     torneigs = Torneig.query.all()
     return jsonify([torneig.serialize() for torneig in torneigs])
 
-@app.route('/torneigs/<int:id_torneig>', methods=['GET'])
+@app.route('/torneigs/<int:id_torneig>', methods=['GET_BY_ID'])
 def get_torneig(id_torneig):
     torneig = Torneig.query.get_or_404(id_torneig)
     return jsonify(torneig.serialize())
@@ -476,7 +480,7 @@ def get_ubicacions():
     ubicacions = Ubicacio.query.all()
     return jsonify([ubicacio.serialize() for ubicacio in ubicacions])
 
-@app.route('/ubicacions/<int:id_ubicacio>', methods=['GET'])
+@app.route('/ubicacions/<int:id_ubicacio>', methods=['GET_BY_ID'])
 def get_ubicacio(id_ubicacio):
     ubicacio = Ubicacio.query.get_or_404(id_ubicacio)
     return jsonify(ubicacio.serialize())
