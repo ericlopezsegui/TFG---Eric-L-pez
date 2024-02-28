@@ -1,26 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'mysql+mysqlconnector://root:root@localhost:3306/Database_torneig')
 
 db = SQLAlchemy(app)
 
-from routes import app as routes_app
-
-from models.torneig import Torneig
-from models.personal import Personal
-from models.jugador import Jugador
-from models.equip import Equip
-from models.ubicacio import Ubicacio
-from models.arbit import Arbit
-from models.partit import Partit
-from models.administradors import Administradors
-from models.classificació import Classificacio
-from models.gol import Gol
-from models.grup import Grup
-from models.sancions import Sancions
-from models.camp import Camp
-
 if __name__ == '__main__':
+    from routes import configure_routes
+    configure_routes(app)
     app.run(debug=True)

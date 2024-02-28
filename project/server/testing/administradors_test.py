@@ -1,15 +1,31 @@
 import pytest
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'server')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from app import app, db  # Importa tu aplicación Flask y la instancia de la base de datos
 from models.administradors import Administradors  # Importa el modelo de administradores
 
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
-    with app.test_client() as client:
-        yield client
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()  # Aquí debes retornar el objeto de cliente de prueba
+
+def test_create_administrador(client):
+    # Prueba la ruta para crear un nuevo administrador
+    data = {
+        'nom': 'Nuevo',
+        'cognom': 'Administrador',
+        'email': 'nuevo@example.com',
+        'password': 'contraseña'
+    }
+    response = client.post('/administradores', json=data)
+    assert response.status_code == 200
+
+    # Verifica que el nuevo administrador se haya agregado correctamente
+    nuevo_administrador = Administradors.query.filter_by(email='nuevo@example.com').first()
+    assert nuevo_administrador is not None
 
 def test_get_administradores(client):
     # Prueba la ruta para obtener todos los administradores
@@ -22,21 +38,6 @@ def test_get_administrador(client):
     response = client.get('/administradores/1')
     assert response.status_code == 200
     assert 'nom' in response.json  # Verifica que se recibe el campo 'nom'
-
-def test_create_administrador(client):
-    # Prueba la ruta para crear un nuevo administrador
-    data = {
-        'nom': 'Nuevo',
-        'cognom': 'Administrador',
-        'email': 'nuevo@example.com',
-        'password': 'contraseña'
-    }
-    response = client.post('/administradores', json=data)
-    assert response.status_code == 201
-
-    # Verifica que el nuevo administrador se haya agregado correctamente
-    nuevo_administrador = Administradors.query.filter_by(email='nuevo@example.com').first()
-    assert nuevo_administrador is not None
 
 def test_update_administrador(client):
     # Prueba la ruta para actualizar un administrador existente

@@ -27,10 +27,10 @@ class Torneig(Base):
     fase = Column(String(50), nullable=False)
 
     # CLAUS FORANIES
-    id_ubicacio = Column(Integer, ForeignKey('Ubicació.id_ubicacio'))
+    id_ubicacio = Column(Integer, ForeignKey('Ubicacio.id_ubicacio'))
 
     # RELACIONS
-    ubicacio = relationship("Ubicació", back_populates="torneig")
+    ubicacio = relationship("Ubicacio", back_populates="torneig")
 
 class Partit(Base):
     __tablename__ = 'Partit'
@@ -99,8 +99,8 @@ class Personal(Base):
     arbit = relationship("Arbit", back_populates="personal")
     torneig = relationship("Torneig", back_populates="personal")
 
-class Ubicació(Base):
-    __tablename__ = 'Ubicació'
+class Ubicacio(Base):
+    __tablename__ = 'Ubicacio'
     id_ubicacio = Column(Integer, Sequence('id_ubicacio_seq'), primary_key=True, autoincrement=True, nullable=False)
     ciutat = Column(String(50), nullable=False)
     provincia = Column(String(50), nullable=False)
@@ -192,7 +192,7 @@ class Classificacio(Base):
     
 Torneig.arbit = relationship("Arbit", order_by=Arbit.id_arbit, back_populates="torneig")
 
-Ubicació.torneig = relationship("Torneig", order_by=Torneig.id_torneig, back_populates="ubicacio")
+Ubicacio.torneig = relationship("Torneig", order_by=Torneig.id_torneig, back_populates="ubicacio")
 
 Arbit.partit = relationship("Partit", order_by=Partit.id_partit, back_populates="arbit")
 
