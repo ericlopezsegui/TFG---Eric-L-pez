@@ -12,85 +12,8 @@ from models.gol import Gol
 from models.equip import Equip
 from models.classificacio import Classificacio
 from models.camp import Camp
-from models.arbit import Arbit
-from models.administradors import Administradors
 
 def configure_routes(app):
-    # RUTES ADMINISTRADORS
-    @app.route('/administradores', methods=['GET'])
-    def get_administradores():
-        administradores = Administradors.query.all()
-        return jsonify([administrador.serialize() for administrador in administradores])
-
-    @app.route('/administradores/<int:id_administrador>', methods=['GET'])
-    def get_administrador(id_administrador):
-        administrador = Administradors.query.get_or_404(id_administrador)
-        return jsonify(administrador.serialize())
-
-    @app.route('/administradores', methods=['POST'])
-    def create_administrador():
-        datos = request.json
-        nuevo_administrador = Administradors(nom=datos['nom'], cognom=datos['cognom'], email=datos['email'], password=datos['password'])
-        db.session.add(nuevo_administrador)
-        db.session.commit()
-        return jsonify(nuevo_administrador.serialize()), 201
-
-    @app.route('/administradores/<int:id_administrador>', methods=['PUT'])
-    def update_administrador(id_administrador):
-        administrador = Administradors.query.get_or_404(id_administrador)
-        datos = request.json
-        administrador.nom = datos.get('nom', administrador.nom)
-        administrador.cognom = datos.get('cognom', administrador.cognom)
-        administrador.email = datos.get('email', administrador.email)
-        administrador.password = datos.get('password', administrador.password)
-        db.session.commit()
-        return jsonify(administrador.serialize())
-
-    @app.route('/administradores/<int:id_administrador>', methods=['DELETE'])
-    def delete_administrador(id_administrador):
-        administrador = Administradors.query.get_or_404(id_administrador)
-        db.session.delete(administrador)
-        db.session.commit()
-        return jsonify({"message": "Administrador eliminado correctamente"})
-
-    # RUTES ARBIT
-    @app.route('/arbitres', methods=['GET'])
-    def get_arbitres():
-        arbitres = Arbit.query.all()
-        return jsonify([arbitre.serialize() for arbitre in arbitres])
-
-    @app.route('/arbitres/<int:id_arbitre>', methods=['GET'])
-    def get_arbitre(id_arbitre):
-        arbitre = Arbit.query.get_or_404(id_arbitre)
-        return jsonify(arbitre.serialize())
-
-    @app.route('/arbitres', methods=['POST'])
-    def create_arbitre():
-        datos = request.json
-        nuevo_arbitre = Arbit(nom=datos['nom'], cognom=datos['cognom'], email=datos['email'], password=datos['password'])
-        db.session.add(nuevo_arbitre)
-        db.session.commit()
-        return jsonify(nuevo_arbitre.serialize()), 201
-
-    @app.route('/arbitres/<int:id_arbitre>', methods=['PUT'])
-    def update_arbitre(id_arbitre):
-        arbitre = Arbit.query.get_or_404(id_arbitre)
-        datos = request.json
-        arbitre.nom = datos.get('nom', arbitre.nom)
-        arbitre.cognom = datos.get('cognom', arbitre.cognom)
-        arbitre.email = datos.get('email', arbitre.email)
-        arbitre.password = datos.get('password', arbitre.password)
-        arbitre.id_torneig = datos.get('id_torneig', arbitre.id_torneig)
-        db.session.commit()
-        return jsonify(arbitre.serialize())
-
-    @app.route('/arbitres/<int:id_arbitre>', methods=['DELETE'])
-    def delete_arbitre(id_arbitre):
-        arbitre = Arbit.query.get_or_404(id_arbitre)
-        db.session.delete(arbitre)
-        db.session.commit()
-        return jsonify({"message": "Arbitre eliminat correctament"})
-
     # RUTES CAMP
     @app.route('/camps', methods=['GET'])
     def get_camps():
