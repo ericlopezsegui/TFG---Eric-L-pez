@@ -1,13 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import os
+
+db = SQLAlchemy()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'mysql+mysqlconnector://root:root@localhost:3306/Database_torneig')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/Database_torneig'
 
-db = SQLAlchemy(app)
+# Inicialización de la extensión SQLAlchemy con la aplicación
+db.init_app(app)
+
+from routes import *
 
 if __name__ == '__main__':
-    from routes import configure_routes
-    configure_routes(app)
     app.run(debug=True)

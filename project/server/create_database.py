@@ -1,4 +1,4 @@
-from sqlalchemy import Date, create_engine, Column, Integer, String, Sequence, Time, ForeignKey, DateTime, LargeBinary
+from sqlalchemy import Date, create_engine, Column, Integer, String, Sequence, Time, ForeignKey, DateTime, LargeBinary, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship, declarative_base
 import mysql.connector
 
@@ -12,16 +12,22 @@ class Camp (Base):
     ubicacio = relationship('Ubicacio', back_populates='camps')
     partits = relationship('Partit', back_populates='camp')
     
-class Classificacio (Base):
+class Classificacio(Base):
     __tablename__ = 'classificacio'
-    id_grup = Column(Integer, ForeignKey('grup.id_grup'), primary_key=True)
-    id_equip = Column(Integer, ForeignKey('equip.id_equip'), primary_key=True)
+    id_grup = Column(Integer, ForeignKey('grup.id_grup', name='fk_classificacio_grup_id'), primary_key=True)
+    id_equip = Column(Integer, ForeignKey('equip.id_equip', name='fk_classificacio_equip_id'), primary_key=True)
     victories = Column(Integer, nullable=False)
     empats = Column(Integer, nullable=False)
     derrotes = Column(Integer, nullable=False)
     punts = Column(Integer, nullable=False)
+    
     equip = relationship('Equip', back_populates='classificacio')
     grup = relationship('Grup', back_populates='classificacio')
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id_grup', 'id_equip'),
+        {},
+    )
 
 class Equip (Base):
     __tablename__ = 'equip'
@@ -34,8 +40,8 @@ class Equip (Base):
     grup = relationship('Grup', back_populates='equips')
     torneig = relationship('Torneig', back_populates='equips')
     jugadors = relationship('Jugador', back_populates='equip')
-    partits1 = relationship('Partit', back_populates='equip1')
-    partits2 = relationship('Partit', back_populates='equip2')
+    partits1 = relationship('Partit', foreign_keys='[Partit.id_equip1]', back_populates='equip1')
+    partits2 = relationship('Partit', foreign_keys='[Partit.id_equip2]', back_populates='equip2')
 
 class Gol (Base):
     __tablename__ = 'gol'
@@ -56,6 +62,7 @@ class Grup (Base):
     equips = relationship('Equip', back_populates='grup')
     partits = relationship('Partit', back_populates='grup')
     classificacio = relationship('Classificacio', back_populates='grup')
+    
 class Jugador (Base):
     __tablename__ = 'jugador'
     id_jugador = Column(Integer, Sequence('jugador_id_seq'), primary_key=True, autoincrement=True)
@@ -69,6 +76,7 @@ class Jugador (Base):
     sancions = relationship('Sancio', back_populates='jugador')
 
 class Partit (Base):
+    __tablename__ = 'partit'
     id_partit = Column(Integer, Sequence('partit_id_seq'), primary_key=True, autoincrement=True)
     data = Column(DateTime, nullable=False)
     hora = Column(Time, nullable=False)
@@ -81,7 +89,7 @@ class Partit (Base):
     id_personal = Column(Integer, ForeignKey('personal.id_personal'), nullable=False)
     id_camp = Column(Integer, ForeignKey('camp.id_camp'), nullable=False)
     equip1 = relationship('Equip', foreign_keys=[id_equip1], back_populates='partits1')
-    equip2 = relationship('Equip', foreign_keys=[id_equip2], back_populates='partits2')
+    equip2 = relationship('Equip', foreign_keys=[id_equip2], back_populates='partits2') 
     grup = relationship('Grup', back_populates='partits')
     personal = relationship('Personal', back_populates='partits')
     camp = relationship('Camp', back_populates='partits')
@@ -101,6 +109,7 @@ class Personal (Base):
     partits = relationship('Partit', back_populates='personal')
 
 class Sancio (Base):
+    __tablename__ = 'sancio'
     id_jugador = Column(Integer, ForeignKey('jugador.id_jugador'), primary_key=True)
     id_partit = Column(Integer, ForeignKey('partit.id_partit'), primary_key=True)
     targeta_groga = Column(Integer, nullable=False)
@@ -132,9 +141,6 @@ class Ubicacio (Base):
     camps = relationship('Camp', back_populates='ubicacio')
     torneigs = relationship('Torneig', back_populates='ubicacio')
     
-# Crear les relacions entre les taules
-
-
 # CREACIÓ DE LA BASE DE DADES
 
 usuari = 'root'
