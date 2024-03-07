@@ -1,6 +1,7 @@
 import unittest
 from app import app, db
 
+# Not working
 class TestApp(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
