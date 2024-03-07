@@ -11,6 +11,7 @@ RUN pip install mysql-connector-python mysql2pgsql
 RUN pip install sqlalchemy
 RUN pip install flask flask_sqlalchemy
 RUN pip install mysqlclient, pytest
+RUN pip install Flask-WTF
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
