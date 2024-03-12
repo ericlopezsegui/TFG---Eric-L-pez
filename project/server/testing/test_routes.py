@@ -1,24 +1,41 @@
 import unittest
-from app import app, db
+from flask import Flask
+from flask_testing import TestCase
+from routes import app
 
-# Not working
-class TestApp(unittest.TestCase):
-    def setUp(self):
-        app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/Database_torneig_test'
-        self.app = app.test_client()
-        db.create_all()
+class TestRoutes(TestCase):
+    def create_app(self):
+        return app
 
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+    def test_get_camps(self):
+        response = self.client.get('/camps')
+        self.assert200(response)
 
-    def test_index_route(self):
-        response = self.app.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, {"message": "Welcome to my Flask app!"})
+    def test_get_camp(self):
+        response = self.client.get('/camps/1')
+        self.assert200(response)
 
-    # Aquí puedes agregar más métodos de prueba para cada una de tus rutas
+    def test_create_camp(self):
+        data = {
+            'name': 'Camp 1',
+            'location': 'Location 1'
+        }
+        response = self.client.post('/camps', json=data)
+        self.assert200(response)
+
+    def test_update_camp(self):
+        data = {
+            'name': 'Updated Camp 1',
+            'location': 'Updated Location 1'
+        }
+        response = self.client.put('/camps/1', json=data)
+        self.assert200(response)
+
+    def test_delete_camp(self):
+        response = self.client.delete('/camps/1')
+        self.assert200(response)
+
+    # Add tests for other CRUD operations here
 
 if __name__ == '__main__':
     unittest.main()

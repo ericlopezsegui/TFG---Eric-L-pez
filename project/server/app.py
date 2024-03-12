@@ -8,7 +8,6 @@ db = SQLAlchemy()
 app = Flask(__name__)
 app.config.from_object(Development)
 
-# Inicialización de la extensión SQLAlchemy con la aplicación
 db.init_app(app)
 
 class validationError (HTTPException):
